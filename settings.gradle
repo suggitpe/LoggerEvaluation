@@ -1,0 +1,6 @@
+include 'base',
+        'log4jraw',
+        'slf4j-log4j',
+        'slf4j-log4j2',
+        'slf4j-logback'
+

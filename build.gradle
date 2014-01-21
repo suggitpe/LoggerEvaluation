@@ -1,23 +1,64 @@
-defaultTasks 'clean', 'build'
-
-apply plugin: "java"
-apply plugin: "idea"
-apply from: "${rootDir}/libraries.gradle"
-
-repositories {
-    jcenter()
-	mavenCentral()
+allprojects {
+    defaultTasks 'clean', 'build'
 }
 
-idea.module {
-    downloadSources = true
+subprojects {
+    apply plugin: "java"
+    apply plugin: "idea"
+    apply from: "${rootDir}/libraries.gradle"
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    idea.module {
+        downloadSources = true
+    }
+
+    dependencies {
+        compile libs.slf4jApi
+
+    }
 }
 
-dependencies {
-    compile libs.slf4jApi
+project('base') {
+    dependencies {
+        compile libs.test.junit
+    }
+}
 
-    runtime libs.slf4jLog4j,
-            libs.log4j
+project('log4jraw') {
+    dependencies {
+        testCompile libs.log4j,
+                libs.test.junit
+    }
+}
 
-    testCompile libs.test.junit
+project('slf4j-log4j') {
+    dependencies {
+        testRuntime libs.slf4jLog4j,
+                libs.log4j
+
+        testCompile libs.test.junit,
+                project(':base')
+    }
+}
+
+project('slf4j-logback') {
+    dependencies {
+        testRuntime libs.logback
+
+        testCompile libs.test.junit,
+                project(':base')
+    }
+}
+
+project('slf4j-log4j2') {
+    dependencies {
+        testRuntime libs.log4j2
+
+        testCompile libs.test.junit,
+                project(':base')
+    }
 }
