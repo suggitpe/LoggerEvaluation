@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-<configuration>
+<configuration scan="true" scanPeriod="30">
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>%d{yyy-MM-dd'T'HH:mm:ss.SSS} | %-10.10t | %-20.20c{1} | %-6p - %m %n</pattern>
         </encoder>
     </appender>
 
+    <appender name="async" class="ch.qos.logback.classic.AsyncAppender">
+        <param name="queueSize" value="256"/>
+        <!--<param name="discardingThreshold" value="0"/>-->
+        <appender-ref ref="console"/>
+    </appender>
+
     <root level="DEBUG">
-        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="async"/>
     </root>
 
 </configuration>
